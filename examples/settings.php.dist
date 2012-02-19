@@ -1,0 +1,8 @@
+<?php
+/**
+ * Constants defined here outside of class because class constants can't be
+ * the result of any operation (concatenation)
+ */
+define('MISO_OAUTH_KEY', 'enteryourkey');
+define('MISO_OAUTH_SECRET', 'enteryoursecret');
+define('MISO_OAUTH_CALLBACK', 'http://localhost/Miso/examples/index.php');
