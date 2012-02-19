@@ -17,4 +17,4 @@ Status
 
 There is some missing api functions like removeFavorite, but the Api is fully functional and already used in http://nfyea.com
 
-On the other way, the example has not been tested yet
+The example is fully working.

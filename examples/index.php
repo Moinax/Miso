@@ -3,11 +3,12 @@ include __DIR__ . '/settings.php';
 include __DIR__.'/../src/Miso/Client.php';
 
 use Miso\Client;
+session_start();
 
-$miso = new Client(MISO_OAUTH_KEY, MISO_OAUTH_SECRET, OAUTH_SIG_METHOD_HMACSHA1, OAUTH_AUTH_TYPE_URI);
+$miso = new Client(MISO_OAUTH_TOKEN, MISO_OAUTH_TOKEN_SECRET, OAUTH_SIG_METHOD_HMACSHA1, OAUTH_AUTH_TYPE_URI);
 
-if ($miso->getStatus() == MisoApi::STATUS_NEED_REQUEST_TOKEN) {
-    $request_token_info = $miso->getApi()->getRequestToken(Client::MISO_REQUEST_TOKEN_URL, MISO_OAUTH_CALLBACK);
+if (!isset($_SESSION['miso']['token'])) {
+    $request_token_info = $miso->getRequestToken(Client::MISO_REQUEST_TOKEN_URL, MISO_OAUTH_CALLBACK);
 
     $_SESSION['miso']['token_secret'] = $request_token_info['oauth_token_secret'];
 
