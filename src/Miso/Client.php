@@ -12,199 +12,28 @@ class Client extends \OAuth {
     const MISO_AUTHORIZE_URL = 'http://www.gomiso.com/oauth/authorize';
 
     /**
-     * @var stdClass
-     */
-    private $user;
-
-    /**
-     * @var stdClass
-     */
-    private $favorites;
-
-    /**
      * Get user from Api
      * @throws \Exception
      * @return stdClass
      */
     public function getUser() {
         $this->fetch('http://gomiso.com/api/oauth/v1/users/show.json');
-        $this->user = json_decode($this->getLastResponse())->user;
+        $user = json_decode($this->getLastResponse())->user;
 
-        if(!$this->user) {
-            throw new \Exception('User not found.');
+        if(!$user) {
+            throw new \Exception('User not found');
         }
 
-        return $this->user;
+        return $user;
     }
 
     /**
-     * Get favorites from Api
-     *
-     * @return array
-     */
-    public function getFavorites() {
-        $this->fetch('http://gomiso.com/api/oauth/v1/media/favorites.json');
-        $this->favorites = json_decode($this->getLastResponse());
-
-        return $this->favorites;
-    }
-
-    /**
-     * Get media info from Api
-     *
-     * @param int $media_id
-     * @return array
-     */
-    public function getMediaInfo($media_id) {
-        $this->fetch(
-            'http://gomiso.com/api/oauth/v1/episodes.json',
-            array(
-                 'media_id' => $media_id,
-                 'count' => 0
-            )
-        );
-       return json_decode($this->getLastResponse());
-    }
-
-    /**
-     * Get media details from Api
-     *
-     * @param int $media_id
-     * @return array
-     */
-    public function getMediaDetails($media_id) {
-        $this->fetch(
-            'http://gomiso.com/api/oauth/v1/media/show.json',
-            array(
-                 'media_id' => $media_id,
-            )
-        );
-       return json_decode($this->getLastResponse())->media;
-    }
-
-    /**
-     * Get episodes from Api
-     *
-     * @param $media
-     * @param $season
-     * @return array
-     */
-    public function getEpisodesBySeason($media, $season) {
-        $this->fetch(
-            'http://gomiso.com/api/oauth/v1/episodes.json',
-            array(
-                 'media_id' => $media->getId(),
-                 'season_num' => $season,
-            )
-        );
-        return json_decode($this->getLastResponse())->episodes;
-    }
-
-    /**
-     * Get episode from Api
-     * @param $media_id
-     * @param $season_num
-     * @param $episode_num
-     * @return stdClass
-     */
-    public function getEpisode($media_id, $season_num, $episode_num) {
-        $this->fetch(
-            'http://gomiso.com/api/oauth/v1/episodes/show.json',
-            array(
-                 'media_id' => $media_id,
-                 'season_num' => $season_num,
-                 'episode_num' => $episode_num,
-            )
-        );
-        return json_decode($this->getLastResponse())->episode;
-
-    }
-
-    /**
-     * Get all new episodes from the Api
-     * @param $media_id
-     * @param $count
-     * @return array
-     */
-    public function getNewEpisodes($media_id, $count) {
-        $this->fetch(
-            'http://gomiso.com/api/oauth/v1/episodes.json',
-            array(
-                 'media_id' => $media_id,
-                 'count' => $count,
-            )
-        );
-        return json_decode($this->getLastResponse())->episodes;
-
-    }
-
-    /**
-     * Get checkins from Api
-     *
-     * @param $media
-     * @param $user_id
-     * @return array
-     */
-    public function getCheckins($media, $user_id) {
-        $checkinsParams = array();
-        $checkinsParams['media_id'] = $media->getId();
-        $checkinsParams['user_id'] = $user_id;
-        $checkinsParams['count'] = 50;
-        $this->fetch(
-            'http://gomiso.com/api/oauth/v1/checkins.json',
-            $checkinsParams
-        );
-        return $this->sanitizeCheckins(json_decode($this->getLastResponse()));
-    }
-
-    /**
-     * Get new checkins from Api
-     *
-     * @param $last_checkin_id
-     * @param $user_id
-     * @return array
-     */
-    public function getNewCheckins($last_checkin_id, $user_id) {
-        $checkinsParams = array();
-        $checkinsParams['user_id'] = $user_id;
-        $checkinsParams['since_id'] = $last_checkin_id;
-        $checkinsParams['count'] = 50;
-        $this->fetch(
-            'http://gomiso.com/api/oauth/v1/checkins.json',
-            $checkinsParams
-        );
-        return $this->sanitizeCheckins(json_decode($this->getLastResponse()));
-
-    }
-    /**
-     * Post a checking to Miso Api
-     * @param int $media_id
-     * @param int $season_num
-     * @param int $episode_num
-     * @return stdClass
-     */
-    public function addCheckin($media_id, $season_num, $episode_num)
-    {
-        $this->fetch(
-            'http://gomiso.com/api/oauth/v1/checkins.json',
-            array(
-                 'media_id' => $media_id,
-                 'season_num' => $season_num,
-                 'episode_num' => $episode_num,
-            ),
-            OAUTH_HTTP_METHOD_POST
-        );
-        return $this->sanitizeCheckins(json_decode($this->getLastResponse())->checkin);
-
-    }
-
-    /**
-     * Search for Media through Miso API
+     * Search for series
      *
      * @param string $query
      * @return array
      */
-    public function searchMedia($query) {
+    public function searchSeries($query) {
         $this->fetch(
             'http://gomiso.com/api/oauth/v1/media.json',
             array(
@@ -218,16 +47,105 @@ class Client extends \OAuth {
     }
 
     /**
-     * Add a media to favorite
+     * Get serie details
      *
-     * @param int $media_id
+     * @param int $serie_id
+     * @return array
+     */
+    public function getSerie($serie_id) {
+        $this->fetch(
+            'http://gomiso.com/api/oauth/v1/media/show.json',
+            array(
+                 'media_id' => $serie_id,
+            )
+        );
+       return json_decode($this->getLastResponse())->media;
+    }
+
+    /**
+     * Get episodes for a serie
+     *
+     * @param int $serie_id
+     * @param int $count
+     * @return array
+     */
+    public function getEpisodes($serie_id, $count = 0) {
+        $this->fetch(
+            'http://gomiso.com/api/oauth/v1/episodes.json',
+            array(
+                 'media_id' => $serie_id,
+                 'count' => $count,
+            )
+        );
+       return json_decode($this->getLastResponse());
+    }
+
+
+    /**
+     * Get episodes for a specific season
+     *
+     * @param int $serie_id
+     * @param int $season
+     * @return array
+     */
+    public function getEpisodesBySeason($serie_id, $season) {
+        $this->fetch(
+            'http://gomiso.com/api/oauth/v1/episodes.json',
+            array(
+                 'media_id' => $serie_id,
+                 'season_num' => $season,
+            )
+        );
+        return json_decode($this->getLastResponse())->episodes;
+    }
+
+    /**
+     * Get an episode for a serie by season and number
+     * @param $serie_id
+     * @param $season
+     * @param $number
+     * @return stdClass
+     */
+    public function getEpisode($serie_id, $season, $number) {
+        $this->fetch(
+            'http://gomiso.com/api/oauth/v1/episodes/show.json',
+            array(
+                 'media_id' => $serie_id,
+                 'season_num' => $season,
+                 'episode_num' => $number,
+            )
+        );
+        return json_decode($this->getLastResponse())->episode;
+
+    }
+
+    /**
+     * Get favorites from Api
+     *
+     * @return array
+     */
+    public function getFavorites() {
+        $this->fetch('http://gomiso.com/api/oauth/v1/media/favorites.json');
+        $favorites = json_decode($this->getLastResponse());
+
+        if(!$favorites) {
+            throw new \Exception('No favorites found');
+        }
+
+        return $favorites;
+    }
+
+    /**
+     * Add a serie to favorite
+     *
+     * @param int $serie_id
      * @return mixed
      */
-    public function addFavorite($media_id) {
+    public function addFavorite($serie_id) {
         $this->fetch(
             'http://gomiso.com/api/oauth/v1/media/favorites.json',
             array(
-                 'media_id' => $media_id,
+                 'media_id' => $serie_id,
             ),
             OAUTH_HTTP_METHOD_POST
         );
@@ -236,16 +154,16 @@ class Client extends \OAuth {
     }
 
     /**
-     * Remove a media from favorites
+     * Remove a serie from favorites
      *
-     * @param int $media_id
+     * @param int $serie_id
      * @return mixed
      */
-    public function removeFavorite($media_id) {
+    public function removeFavorite($serie_id) {
         $this->fetch(
             'http://gomiso.com/api/oauth/v1/media/favorites.json',
             array(
-                 'media_id' => $media_id,
+                 'media_id' => $serie_id,
             ),
             OAUTH_HTTP_METHOD_DELETE
         );
@@ -254,28 +172,48 @@ class Client extends \OAuth {
     }
 
     /**
-     * Sanitize checkin to transfor id in checkin_id
+     * Get checkins for a serie
      *
-     * @param $misoCheckin
-     * @return mixed
+     * @param int $serie_id
+     * @param int $user_id
+     * @param int $last_checkin
+     * @return array
      */
-    public function sanitizeCheckins($misoCheckins) {
-        if (is_array($misoCheckins)) {
-            foreach($misoCheckins as $offest => $misoCheckin) {
-                $misoCheckins[$offest] = $this->sanitizeCheckins($misoCheckin);
-            }
-
-        } else {
-            if (isset($misoCheckins->checkin)) {
-                $misoCheckins->checkin->checkin_id = $misoCheckins->checkin->id;
-                unset($misoCheckins->checkin->id);
-            } else {
-                $misoCheckins->checkin_id = $misoCheckins->id;
-                unset($misoCheckins->id);
-
-            }
+    public function getCheckins($serie_id, $user_id, $last_checkin = null) {
+        $checkinsParams = array();
+        $checkinsParams['media_id'] = $serie_id;
+        $checkinsParams['user_id'] = $user_id;
+        $checkinsParams['count'] = 50;
+        if ($last_checkin != null) {
+            $checkinsParams['since_id'] = $last_checkin;
         }
+        $this->fetch(
+            'http://gomiso.com/api/oauth/v1/checkins.json',
+            $checkinsParams
+        );
+        return $this->sanitizeCheckins(json_decode($this->getLastResponse()));
+    }
 
-        return $misoCheckins;
+
+    /**
+     * Post a checking
+     * @param int $serie_id
+     * @param int $season
+     * @param int $number
+     * @return stdClass
+     */
+    public function addCheckin($serie_id, $season, $number)
+    {
+        $this->fetch(
+            'http://gomiso.com/api/oauth/v1/checkins.json',
+            array(
+                 'media_id' => $serie_id,
+                 'season_num' => $season,
+                 'episode_num' => $number,
+            ),
+            OAUTH_HTTP_METHOD_POST
+        );
+        return $this->sanitizeCheckins(json_decode($this->getLastResponse())->checkin);
+
     }
 }
