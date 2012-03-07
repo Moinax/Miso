@@ -216,4 +216,20 @@ class Client extends \OAuth {
         return $this->sanitizeCheckins(json_decode($this->getLastResponse())->checkin);
 
     }
+
+    /**
+     * Get the Trending series
+     * @param int $count
+     * @return array
+     */
+    public function getTrendingSeries($count = 20) {
+
+        $this->fetch(
+            'http://gomiso.com/api/oauth/v1/media/trending.json',
+                    array(
+                         'count' => $count,
+                    )
+        );
+        return json_decode($this->getLastResponse());
+    }
 }
