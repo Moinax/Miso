@@ -191,7 +191,7 @@ class Client extends \OAuth {
             'http://gomiso.com/api/oauth/v1/checkins.json',
             $checkinsParams
         );
-        return $this->sanitizeCheckins(json_decode($this->getLastResponse()));
+        return json_decode($this->getLastResponse());
     }
 
 
@@ -213,7 +213,7 @@ class Client extends \OAuth {
             ),
             OAUTH_HTTP_METHOD_POST
         );
-        return $this->sanitizeCheckins(json_decode($this->getLastResponse())->checkin);
+        return json_decode($this->getLastResponse())->checkin;
 
     }
 
