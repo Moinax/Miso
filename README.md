@@ -15,6 +15,4 @@ For the example, the session is used to store the token and token_secret, but yo
 Status
 ------
 
-There is some missing api functions like removeFavorite, but the Api is fully functional and already used in http://nfyea.com
-
-The example is fully working.
+This version is quite stable and used in production on http://nextepisode.tv
