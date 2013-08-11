@@ -1,6 +1,6 @@
 <?php
 include __DIR__ . '/settings.php';
-include __DIR__.'/../src/Miso/Client.php';
+include __DIR__ . '/../src/Moinax/Miso/Client.php';
 
 use Miso\Client;
 session_start();
