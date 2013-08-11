@@ -1,6 +1,6 @@
 <?php
 
-namespace Miso;
+namespace Moinax\Miso;
 
 class Client extends \OAuth {
     const STATUS_NEED_REQUEST_TOKEN = 0;
