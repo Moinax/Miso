@@ -14,7 +14,7 @@ class Client extends \OAuth {
     /**
      * Get user from Api
      * @throws \Exception
-     * @return stdClass
+     * @return \stdClass
      */
     public function getUser() {
         $this->fetch('http://gomiso.com/api/oauth/v1/users/show.json');
@@ -104,7 +104,7 @@ class Client extends \OAuth {
      * @param $serie_id
      * @param $season
      * @param $number
-     * @return stdClass
+     * @return \stdClass
      */
     public function getEpisode($serie_id, $season, $number) {
         $this->fetch(
@@ -122,6 +122,7 @@ class Client extends \OAuth {
     /**
      * Get favorites from Api
      *
+     * @throws \Exception
      * @return array
      */
     public function getFavorites() {
@@ -200,7 +201,7 @@ class Client extends \OAuth {
      * @param int $serie_id
      * @param int $season
      * @param int $number
-     * @return stdClass
+     * @return \stdClass
      */
     public function addCheckin($serie_id, $season, $number)
     {

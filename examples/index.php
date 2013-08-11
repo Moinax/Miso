@@ -22,4 +22,4 @@ $user = $miso->getUser();
 
 $favorites = $miso->getFavorites();
 
-$alcatraz = $miso->searchMedia('Alcatraz');
+$alcatraz = $miso->searchSeries('Alcatraz');
