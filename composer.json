@@ -1,0 +1,21 @@
+{
+    "name": "moinax/miso",
+    "description": "PHP client used to connect to the Miso api and extending OAuth.",
+    "keywords": ["API"],
+    "homepage": "http://moinax.github.io/Miso/",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Moinax",
+            "email": "moinax@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=5.3.3",
+        "ext-oauth": "*"
+    },
+    "autoload": {
+        "psr-0": { "Moinax\\Miso": "src" }
+    }
+}
