@@ -12,8 +12,11 @@
     ],
     "minimum-stability": "dev",
     "require": {
-        "php": ">=5.3.3",
-        "ext-oauth": "*"
+        "php": ">=5.3.3"
+    },
+    "suggest": {
+        "ext-oauth": "PECL OAuth library",
+        "liboauth-php": "Debian OAuth library"
     },
     "autoload": {
         "psr-0": { "Moinax\\Miso": "src" }
