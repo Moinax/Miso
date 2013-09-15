@@ -12,11 +12,11 @@
     ],
     "minimum-stability": "dev",
     "require": {
-        "php": ">=5.3.3"
+        "php": ">=5.3.3",
+        "ext-oauth": "*"
     },
     "suggest": {
-        "ext-oauth": "PECL OAuth library",
-        "liboauth-php": "Debian OAuth library"
+        "ext-oauth": "To install PECL OAuth library on Debian: sudo apt-get install libpcre3-dev && sudo pecl install oauth"
     },
     "autoload": {
         "psr-0": { "Moinax\\Miso": "src" }
